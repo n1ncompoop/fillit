@@ -6,7 +6,7 @@
 /*   By: rkwon <[rkwon@student.42.us.org]>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 21:06:41 by rkwon             #+#    #+#             */
-/*   Updated: 2018/03/19 21:06:42 by rkwon            ###   ########.fr       */
+/*   Updated: 2018/03/20 23:15:40 by rkwon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@
 typedef struct      s_piece
 {
     char            **name;
-    int             width;
-    int             height;
-    char            letter;
+	int				coords[4][2];
+	char            letter;
     struct s_piece  *next;
 }                   t_piece;
-3
 #endif
