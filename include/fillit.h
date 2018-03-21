@@ -27,5 +27,5 @@ typedef struct      s_piece
     char            letter;
     struct s_piece  *next;
 }                   t_piece;
-3
+
 #endif
