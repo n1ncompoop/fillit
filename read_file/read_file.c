@@ -6,18 +6,82 @@
 /*   By: pnarayan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 22:40:00 by pnarayan          #+#    #+#             */
-/*   Updated: 2018/03/22 00:47:36 by pnarayan         ###   ########.fr       */
+/*   Updated: 2018/03/22 05:27:45 by pnarayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//#include "fillit.h"
 #include <unistd.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #define BUFFSIZE 21
+
+void	extract_tet(char **arr, int tet_id)
+{
+	int			x;
+	int			i;
+	int			j;
+	int			coords[4][2];
+
+	i = 0;
+	x = 0;
+	while (i < 4)
+	{
+		j = 0;
+		while (j < 4)
+		{
+			if (arr[i][j] == '#')
+			{
+				coords[x][0] = i;
+				coords[x][1] = j;
+				printf("%c ", tet_id + 'A' - 1);
+				//printf("\t(%d%d)\t", i, j);
+				x++;
+			}
+			else
+				printf("  ");
+			j++;
+		}
+		printf("\n");
+		i++;
+	}
+	
+	/*x = 0;
+	while (x < 4)
+	{
+		//printf("(%d, %d)\t", coords[x][0], coords[x][1]);
+		x++;
+	}*/
+}
+
+void	conv_2d(char *str, int tet_id)
+{
+	char	**arr;
+	int		i;
+	int		j;
+
+	i = 0;
+	arr = (char **)malloc(sizeof(char *) * 4);
+	while (i < 4)
+	{
+		arr[i] = (char *)malloc(1 * 5);
+		j = 0;
+		while (j < 5)
+		{
+			arr[i][j] = *str;
+			//printf(" %c", arr[i][j]);
+			j++;
+			str++;
+		}
+		i++;
+	}
+	//valid_piece(arr, 0, 0);
+	extract_tet(arr, tet_id);
+}
+
 
 int		read_file(char *filename)
 {
@@ -42,8 +106,8 @@ int		read_file(char *filename)
 		buff[ret] = '\0';
 		strncpy(full_str, buff, ret);
 		//printf("full_str : \n%s",full_str); 
+		printf("\nMap : %d\n", tet_id);
 		conv_2d(full_str, tet_id);
-		printf("\nend of map : %d\n", tet_id);
 		tet_id++;
 	}
 	close(fd);
