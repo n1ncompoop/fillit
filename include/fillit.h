@@ -6,7 +6,7 @@
 /*   By: rkwon <[rkwon@student.42.us.org]>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/19 21:06:41 by rkwon             #+#    #+#             */
-/*   Updated: 2018/03/19 21:06:42 by rkwon            ###   ########.fr       */
+/*   Updated: 2018/03/21 22:36:23 by pnarayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 # include <sys/types.h>
 # include <unistd.h>
 # include "../libft/libft.h"
+#define BUFSIZE 20
 
 typedef struct      s_piece
 {
-    char            **name;
-    int             width;
-    int             height;
+    char            *name;
+	int				coords[4][2];
     char            letter;
     struct s_piece  *next;
 }                   t_piece;
-3
+
 #endif
