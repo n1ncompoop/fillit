@@ -10,80 +10,71 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
-#include "../include/fillit.h"
 
-int     valid_shape(char **str, int x, int y)
+int     valid_shape(char **str)
 {
     int     connect;
+	int		x;
+	int		y;
 
+	x = 0;
+	y = 0;
     connect = 0;
-    while (str[y][x])
+    while (y < 4)
     {
-        while (y < 4)
+		x = 0;
+        while (x < 4)
         {
-            while (x < 4)
+            if (str[y][x] == '#')
             {
-                if (str[y][x] == '#')
-                {
-                    if (str[y + 1][x] == '#')
-                        connect++;
-                    if (str[y][x + 1] == '#')
-                        connect++;
-                }
-                x++;
+				if (y != 3)
+                	if (str[y + 1][x] == '#')
+                    	connect++;
+				if (x != 3)
+                	if (str[y][x + 1] == '#')
+                    	connect++;
             }
-            y++;
+            x++;
         }
+        y++;
     }
-    if (connect == 3)
+    if (connect > 2)
         return(1);
     else
         return(0);
 }
 
-int     valid_piece(char **str, int x, int y)
+int     valid_piece(char **str)
 {
     int     shrp_cnt;
+	int		x;
+	int		y;
 
     shrp_cnt = 0;
-    while (str[y][x])
+	x = 0;
+	y = 0;
+	
+    while (y < 4)
     {
-        while (y <= 3)
-        {
-            while (x <= 3)
+		x = 0;
+    	while (x < 4)            
+		{
+            if (str[y][x] == '.')
+                x++;
+            else if (str[y][x] == '#')
             {
-                if (str[y][x] == '.')
-                    x++;
-                else if (str[y][x] == '#')
-                {
-                    x++;
-                    shrp_cnt++;
-                }   
-                else
-                    return (0);           
-            }
-            if (str[y][x] == '\n')
-            {
-                x = 0;
-                y++;
-            }
+        		x++;
+                shrp_cnt++;
+            }   
             else
-                return (0);
+                return (0);           
         }
-        if (y == 4)
-            if (((shrp_cnt == 4) && (valid_shape(&str, 0, 0))) 
-                && ((str[y][x] == '\n') || (str[y][x] == '\0')))
-                return (1);
-    }
-    return (0);
-}
-
-int main(int ac, char **av)
-{
-    if (ac == 2)
-    {
-        printf("%d\n", valid_piece(&av[1], 0, 0));
-    }
+        if (str[y][x] == '\n')
+            y++;
+        else
+            return (0);
+	}
+    if ((shrp_cnt == 4) && valid_shape(str))
+    		return (1);
     return (0);
 }
