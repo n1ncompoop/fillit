@@ -87,7 +87,7 @@ int     valid_piece(char **str)
     return (0);
 }
 
-int		*extract_tet(char **arr, int tet_id)
+void		extract_tet(char **arr, int tet_id)
 {
 	int			x;
 	int			i;
@@ -130,7 +130,7 @@ int		*extract_tet(char **arr, int tet_id)
 		printf("%d ", coords[x]);
 		x++;
 	}
-	return(coords);
+	//return(coords);
 }
 
 int		*conv_2d(char *str, int tet_id)
@@ -155,8 +155,78 @@ int		*conv_2d(char *str, int tet_id)
 		i++;
 	}
 	if (valid_piece(arr))
-		return(extract_tet(arr, tet_id));
+		extract_tet(arr, tet_id); // store in variable (int *)
+		// return (int *)
 	return(0);
+}
+
+int		*append_int_arr(int *piece, int *full)
+{
+	int		*arr;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (!(arr = (int *)malloc(sizeof(int) * (ft_intlen(full) + 8))))
+		return (0);
+	while (arr[i])
+	{
+		while (full[i])
+		{
+			arr[i] = full[i];
+			i++;	
+		}
+		while (piece[j])
+		{
+			arr[i] = piece[j]
+			i++;
+			j++;
+		}
+	}
+}
+
+int		*swap_places(int *full, int	i)
+{
+	int		*cpy[8];
+	int		cnt;
+	int		i_cpy;
+
+	cnt = 0;
+	i_cpy = i;
+	while (cnt < 8)
+	{
+		cpy[cnt] = full[i_cpy];
+		i_cpy++;
+		cnt++;
+	}
+	cnt = 0;
+	while (cnt < 8)
+	{
+		full[i] = full[i_cpy];
+		full[i_cpy] = cpy[cnt];
+		i++;
+		i_cpy++;
+		cnt++;
+	}
+}
+
+void	tet_solver(int	*full, int nbr_of_pieces)
+{
+	char	**map;
+	int		i;
+	int		x;
+	int		y;
+
+	map = gen_map(nbr_of_pieces);
+	i = 0;
+	x = 0;
+	y = 0;
+	if (map[y][x] == '.')
+	{
+		if (!(place_piece(&full[i], map, y, x)))
+			swap_places(full, i);
+	}
 }
 
 
@@ -185,8 +255,9 @@ int		read_file(char *filename)
 		strncpy(full_str, buff, ret);
 		//printf("full_str : \n%s",full_str); 
 		printf("\nMap : %d\n", tet_id);
-		ft_ralloc(onepce, conv_2d(full_str, tet_id)); 
-		//realloc everytime 8 int and add in oncepce
+		conv_2d(full_str, tet_id); //recieve ONE piece coords (int *)
+		//append_int_arr(onepce, conv_2d(full_str, tet_id);
+		//tet_solver(onepce, nbr_of_pieces);
 		tet_id++;
 	}
 	close(fd);
