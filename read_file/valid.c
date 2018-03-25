@@ -6,10 +6,11 @@
 /*   By: rkwon <rkwon@student.42.us.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/15 15:53:11 by rkwon             #+#    #+#             */
-/*   Updated: 2018/03/15 15:53:23 by rkwon            ###   ########.fr       */
+/*   Updated: 2018/03/25 05:50:47 by pnarayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "fillit.h"
 
 int     valid_shape(char **str)
 {

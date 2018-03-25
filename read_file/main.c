@@ -1,42 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   extract_tet.c                                      :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: pnarayan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/22 03:54:50 by pnarayan          #+#    #+#             */
-/*   Updated: 2018/03/25 05:46:15 by pnarayan         ###   ########.fr       */
+/*   Created: 2018/03/25 05:47:09 by pnarayan          #+#    #+#             */
+/*   Updated: 2018/03/25 05:47:35 by pnarayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 
-void	extract_tet(char **arr, int tet_id)
+int		main(int argc, char **argv)
 {
-	int			x;
-	int			i;
-	int			j;
-	int			coords[8];
+	int		ret;
 
-	i = 0;
-	x = 0;
-	while (i < 4)
+	if (argc == 1)
 	{
-		j = 0;
-		while (j < 4)
-		{
-			if (arr[i][j] == '#')
-			{
-				coords[x] = i;
-				x++;
-				coords[x++] = j;
-			}
-			else
-				printf("  ");
-			j++;
-		}
-		i++;
+		printf("%s\n", "Usage Method");
+		//		ft_putstr("Usage method\n");
 	}
-	map_coords(coords, tet_id);
+	else if (argc == 2)
+	{
+		ret = read_file(argv[1]);
+	}
+	return (0);
 }
