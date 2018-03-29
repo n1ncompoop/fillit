@@ -6,7 +6,7 @@
 /*   By: pnarayan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 22:40:00 by pnarayan          #+#    #+#             */
-/*   Updated: 2018/03/22 05:27:45 by pnarayan         ###   ########.fr       */
+/*   Updated: 2018/03/23 05:03:17 by pnarayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,46 @@
 #include <sys/types.h>
 #define BUFFSIZE 21
 
-int     valid_shape(char **str)
+void	*ft_memset(void *b, int c, size_t len)
+{
+	size_t			i;
+	char			*str;
+	unsigned char	chr;
+
+	i = 0;
+	str = (char *)b;
+	chr = (unsigned char)c;
+	while (i < len)
+	{
+		str[i] = chr;
+		i++;
+	}
+	return (str);
+}
+
+char    **gen_map(int x)//MEMORY GENERATION
+{
+    int     i;
+    int     j;
+    char     **map;
+
+    i = 0;
+    j = 0;
+    if (!(map = (char **)malloc(sizeof(char *) * (x + 1))))
+        return (NULL);
+    while (i < x)
+    {
+        if (!(map[i] = (char *)malloc(sizeof(char) * (x + 1))))
+            return (NULL);
+        ft_memset(map[i], '.', x);
+        map[i][x] = '\0';
+        i++;
+    }
+    map[i] = NULL;
+    return(map);
+}
+
+int     valid_shape(char **str)//VALIDITY
 {
     int     connect;
 	int		x;
@@ -52,7 +91,7 @@ int     valid_shape(char **str)
         return(0);
 }
 
-int     valid_piece(char **str)
+int     valid_piece(char **str) // VALIDITY
 {
     int     shrp_cnt;
 	int		x;
@@ -87,12 +126,12 @@ int     valid_piece(char **str)
     return (0);
 }
 
-void		extract_tet(char **arr, int tet_id)
+int		*extract_tet(char **arr, int tet_id)//returns one piece as int *
 {
 	int			x;
 	int			i;
 	int			j;
-	int			coords[21];
+	static int	coords[23];
 
 	i = 0;
 	x = 0;
@@ -117,7 +156,7 @@ void		extract_tet(char **arr, int tet_id)
 		printf("\n");
 		i++;
 	}
-	
+
 	x = 0;
 	i = coords[0];
 	j = coords[1];
@@ -130,10 +169,12 @@ void		extract_tet(char **arr, int tet_id)
 		printf("%d ", coords[x]);
 		x++;
 	}
-	//return(coords);
+	coords[x] = tet_id;
+	coords[x + 1] = -42;
+	return(coords);
 }
 
-int		*conv_2d(char *str, int tet_id)
+int		*conv_2d(char *str, int tet_id)//CHECK VALID THEN SENDS ONE TETRIS as int *
 {
 	char	**arr;
 	int		i;
@@ -155,82 +196,44 @@ int		*conv_2d(char *str, int tet_id)
 		i++;
 	}
 	if (valid_piece(arr))
-		extract_tet(arr, tet_id); // store in variable (int *)
-		// return (int *)
+		return(extract_tet(arr, tet_id));/////////////////////////////one string of coord[21] --> to connect
 	return(0);
 }
 
-int		*append_int_arr(int *piece, int *full)
+int		*app_end(int *pce_lst, int *new_pce)//APPENDS NEXT PIECE TO CURRENT CHAIN OF PIECES
 {
-	int		*arr;
+	int		cur_cnt;
+	int		*new_lst;
 	int		i;
 	int		j;
 
+	cur_cnt = 0;
 	i = 0;
-	j = 0;
-	if (!(arr = (int *)malloc(sizeof(int) * (ft_intlen(full) + 8))))
-		return (0);
-	while (arr[i])
+	j = 2;
+	if ((pce_lst[cur_cnt]) != -42)
 	{
-		while (full[i])
-		{
-			arr[i] = full[i];
-			i++;	
-		}
-		while (piece[j])
-		{
-			arr[i] = piece[j]
-			i++;
-			j++;
-		}
+		while (pce_lst[cur_cnt] != -42)
+			cur_cnt++;
 	}
-}
-
-int		*swap_places(int *full, int	i)
-{
-	int		*cpy[8];
-	int		cnt;
-	int		i_cpy;
-
-	cnt = 0;
-	i_cpy = i;
-	while (cnt < 8)
+	if (!(new_lst = (int *)malloc(sizeof(int) * (cur_cnt + 8))))
+		return(NULL);
+	while (pce_lst[i] != -42)
 	{
-		cpy[cnt] = full[i_cpy];
-		i_cpy++;
-		cnt++;
-	}
-	cnt = 0;
-	while (cnt < 8)
-	{
-		full[i] = full[i_cpy];
-		full[i_cpy] = cpy[cnt];
+		new_lst[i] = pce_lst[i];
 		i++;
-		i_cpy++;
-		cnt++;
 	}
-}
-
-void	tet_solver(int	*full, int nbr_of_pieces)
-{
-	char	**map;
-	int		i;
-	int		x;
-	int		y;
-
-	map = gen_map(nbr_of_pieces);
-	i = 0;
-	x = 0;
-	y = 0;
-	if (map[y][x] == '.')
+	while (j < 9)
 	{
-		if (!(place_piece(&full[i], map, y, x)))
-			swap_places(full, i);
+		new_lst[i] = new_pce[j];
+		i++;
+		j++;
 	}
+	new_lst[i] = -42;
+	return(new_lst);
 }
 
-
-int		read_file(char *filename)
+//void	solve_tet(char **map, int *onepce, int minmapsize)
+int		read_file(char *filename)//CONTROLLER
 {
 	int		fd;
 	int		ret;
@@ -239,29 +242,37 @@ int		read_file(char *filename)
 	char	piece_2d[4][4];
 	int		tet_id;
 	int		*onepce;
-	
+	char	**map;
+
 	tet_id = 1;
+	onepce[0] = -42;
 	if ((fd = open(filename, O_RDONLY)) == -1)
-		return (0);
+		return(0);
 	while ((ret = read(fd, buff, BUFFSIZE)))
 	{
 		// if ret is less than BUFFSIZE it's invalid
 		if (ret < BUFFSIZE) 
 		{
 			printf("Invalid maps");
-			return (0);
+			return(0);
 		}
 		buff[ret] = '\0';
-		strncpy(full_str, buff, ret);
+		strncpy(full_str, buff, ret); //FIX MUST FIX MUST FIX MUST FIX MUST
 		//printf("full_str : \n%s",full_str); 
 		printf("\nMap : %d\n", tet_id);
-		conv_2d(full_str, tet_id); //recieve ONE piece coords (int *)
-		//append_int_arr(onepce, conv_2d(full_str, tet_id);
-		//tet_solver(onepce, nbr_of_pieces);
+		onepce = app_end(onepce, conv_2d(full_str, tet_id)); // recieve full list of coords (no 0,0 in list because it's already assumed) // tet_id = last number
 		tet_id++;
 	}
+	/*tet_id = 0;
+	printf("\n");
+	while (onepce[tet_id] != -42)
+	{
+		printf("%d", onepce[tet_id]);
+		tet_id++;
+	}*/
+	//solve_tet(map, onepce, minmapsize);
 	close(fd);
-	return (1);
+	return(1);
 }
 
 int		main(int argc, char **argv)
@@ -277,5 +288,5 @@ int		main(int argc, char **argv)
 	{
 		ret = read_file(argv[1]);
 	}
-	return (0);
+	return(0);
 }

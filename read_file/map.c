@@ -39,23 +39,21 @@ char    **gen_map(int x)
 {
     int     i;
     int     j;
-    char    **map;
+    char     **map;
 
     i = 0;
     j = 0;
     if (!(map = (char **)malloc(sizeof(char *) * (x + 1))))
-        return (NULL);
+        return(NULL);
     while (i < x)
     {
         if (!(map[i] = (char *)malloc(sizeof(char) * (x + 1))))
-            return (NULL);
+            return(NULL);
         ft_memset(map[i], '.', x);
-        map[i][x] = '\n';
-        map[i][x + 1] = '\0';
         i++;
     }
-   map[i] = NULL;
-   return(map);
+    map[i] = NULL;
+    return(map);
 }
 
 int main()
@@ -67,13 +65,13 @@ int main()
 
     i = 0;
     j = 0;
-    x = 6;
+    x = 9;
     map = gen_map(x);
     while (i < x)
     {
         while (j < x)
         {
-            printf("%s", map[i]);
+            printf("%c ", map[i][j]);
             j++;
         }
         printf("\n");
