@@ -35,22 +35,21 @@ void	*ft_memset(void *b, int c, size_t len)
 	return (str);
 }
 
-int    **gen_map(int x)
+char    **gen_map(int x)
 {
     int     i;
     int     j;
-    int     **map;
+    char     **map;
 
     i = 0;
     j = 0;
-    if (!(map = (int **)malloc(sizeof(int *) * (x + 1))))
-        return (NULL);
+    if (!(map = (char **)malloc(sizeof(char *) * (x + 1))))
+        return(NULL);
     while (i < x)
     {
-        if (!(map[i] = (int *)malloc(sizeof(int) * (x + 1))))
-            return (NULL);
-        ft_memset(map[i], 0, x);
-        map[i][x] = NULL;
+        if (!(map[i] = (char *)malloc(sizeof(char) * (x + 1))))
+            return(NULL);
+        ft_memset(map[i], '.', x);
         i++;
     }
     map[i] = NULL;
@@ -59,7 +58,7 @@ int    **gen_map(int x)
 
 int main()
 {
-    int     **map;
+    char     **map;
     int     x;
     int     i;
     int     j;
@@ -72,7 +71,7 @@ int main()
     {
         while (j < x)
         {
-            printf("%d ", map[i][j]);
+            printf("%c ", map[i][j]);
             j++;
         }
         printf("\n");

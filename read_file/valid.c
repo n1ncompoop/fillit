@@ -38,7 +38,7 @@ int     valid_shape(char **str)
         }
         y++;
     }
-    if (connect > 2)
+    if ((connect == 3) || (connect == 4))
         return(1);
     else
         return(0);
