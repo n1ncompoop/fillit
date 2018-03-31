@@ -25,8 +25,9 @@ int square_root(int n)
 char	**place_tet(char **board, int *piece, int *pce_ptr, int *y, int *x)//takes board[y][x] position and places tetris piece[*pce_ptr]
 {
     int     *tmp;
-    int     i;
+    char    **tmp_board;
 
+    tmp_board = board;
     tmp = pce_ptr;
     if (board[*y][*x] == '.')
         board[*y][*x] = 'A' + piece[*tmp + 6];
@@ -38,8 +39,12 @@ char	**place_tet(char **board, int *piece, int *pce_ptr, int *y, int *x)//takes 
             *pce_ptr += 2;
         }
         else
+        {
+            board = tmp_board;//free tmp_board
             return(NULL);
+        }
 	}
+    free_tmp
     return(board);
 }
 
@@ -65,7 +70,7 @@ void	solve_tet(int *onepce, int *pce_place, char **map)
         {
             if (map[*y][*x] == '.')
             {
-                if (!(place_tet(map, onepce, *pce_place, &y, &x))) // will place until last piece
+                if (!(map = place_tet(map, onepce, *pce_place, &y, &x))) // will place until last piece
                 {
                     if ((onepce[(*pce_place) + 7]) != -42) //IF THERE IS A NEXT PIECE
                     {
@@ -78,16 +83,15 @@ void	solve_tet(int *onepce, int *pce_place, char **map)
                             i++;
                         }
                         *pce_place -= 7;
-                        place_tet(map, onepce, *pce_place, &y, &x);
+                        map = solve_tet(onepce, *pce_place, map);
                     }
                     else
                         return(NULL);
                 }
                 else
-                    place_tet(map, onepce, *pce_place, &y, &x);
+                    map = place_tet(map, onepce, *pce_place, &y, &x);
             }
-            else
-                (*x)++;
+            (*x)++;
         }
         x = 0;
         (*y)++;
