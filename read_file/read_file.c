@@ -6,7 +6,7 @@
 /*   By: pnarayan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 22:40:00 by pnarayan          #+#    #+#             */
-/*   Updated: 2018/03/23 05:03:17 by pnarayan         ###   ########.fr       */
+/*   Updated: 2018/03/30 22:36:14 by rkwon            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	solve_tet(int *onepce, int *pce_place, char **map, int map_sz)
         {
             if (map[*y][*x] == '.')
             {
-                if (!(map = place_tet(map, &onepce, &pce_place, &y, &x))) // will place until last piece
+                if (!(map = place_tet(map, onepce, pce_place, y, x))) // will place until last piece
                 {
                     if ((onepce[*(pce_place + 7)]) != -42) //IF THERE IS A NEXT PIECE
                     {
@@ -96,7 +96,7 @@ void	solve_tet(int *onepce, int *pce_place, char **map, int map_sz)
                             i++;
                         }
                         *pce_place = *(pce_place - 7);
-                        map = solve_tet(&onepce, &pce_place, map, map_sz);
+                        map = solve_tet(onepce, pce_place, map, map_sz);
                     }
                     else
                         return(NULL);
@@ -364,10 +364,10 @@ int		read_file(char *filename)//CONTROLLER
 	map_sz = square_root(tet_id * 4); //min map size
     map = gen_map(map_sz);
 
-	if (!(solve_tet(&onepce, &pce_place, map, map_sz)))
+	if (!(solve_tet(&onepce, pce_place, map, map_sz)))
 	{
 		map = gen_map(map_sz++);
-		solve_tet(&onepce, &pce_place, map, map_sz);
+		solve_tet(&onepce, pce_place, map, map_sz);
 	}
 		
 	close(fd);
