@@ -6,7 +6,7 @@
 /*   By: pnarayan <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/20 22:40:00 by pnarayan          #+#    #+#             */
-/*   Updated: 2018/04/06 19:32:33 by pnarayan         ###   ########.fr       */
+/*   Updated: 2018/04/06 01:43:06 by pnarayan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 
 typedef struct		s_tetris
 {
+	char			tet_id;
 	int				*pieces;
 	struct s_tetris	*next;
 }					t_tetris;
@@ -143,17 +144,17 @@ void	map_coords(int *coords, int tet_id)
 	{
 		all_pieces[id][k++] = coords[x] - i;
 		//coords[x] = coords[x] - i;
-		ft_putnbr(all_pieces[id][k - 1]);
+		//ft_putnbr(all_pieces[id][k - 1]);
 		x++;
 		all_pieces[id][k++] = coords[x] - j;
 		//coords[x] = coords[x] - j;
-		ft_putnbr(all_pieces[id][k - 1]);
+		//ft_putnbr(all_pieces[id][k - 1]);
 		x++;
 	}
 	all_pieces[id][k] = tet_id;
 	//coords[x] = tet_id;
-	ft_putnbr(all_pieces[id][k]);
-	ft_putchar('\n');
+	//ft_putnbr(all_pieces[id][k]);
+	//ft_putchar('\n');
 }
 
 void	extract_tet(char **arr, int tet_id)
