@@ -16,7 +16,7 @@ char		*ft_replace(char *str, char a, char b)
 {
 	char	*new;
 
-	if (!(new = (char *)ft_memalloc(strlen(str))))
+	if (!(new = (char *)ft_memalloc(ft_strlen(str))))
 		return (NULL);
 	if (!str)
 		return (str);
